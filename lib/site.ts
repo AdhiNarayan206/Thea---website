@@ -12,7 +12,10 @@ export const site = {
   githubUrl: "https://github.com/AdhiNarayan206/Thea---Your-Digital-Companion",
   download: {
     filename: "Thea-Setup-0.1.0.exe",
-    href: "/downloads/Thea-Setup-0.1.0.exe",
+    // Points directly to the latest GitHub release installer, with fallback to local download
+    href: "https://github.com/AdhiNarayan206/Thea---Your-Digital-Companion/releases/latest/download/Thea-Setup-0.1.0.exe",
+    fallbackHref: "/downloads/Thea-Setup-0.1.0.exe",
+    latestReleaseUrl: "https://github.com/AdhiNarayan206/Thea---Your-Digital-Companion/releases/latest",
     sizeBytes: 46_844_668,
     sizeLabel: "44.7 MB",
     sha256: "978C963C75EC3894428212EF583E02D07AB41413A92868E929D3508A3C0AF9FE",
