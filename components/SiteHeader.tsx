@@ -123,10 +123,11 @@ export default function SiteHeader({ variant = "home" }: Props) {
             href={site.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={styles.quiet}
-            aria-label="Thea GitHub repository"
+            className={styles.starBtn}
+            aria-label="Star Thea on GitHub"
           >
-            GitHub
+            <span className={styles.starIcon} aria-hidden>★</span>
+            <span>Star</span>
           </a>
           <a
             href={site.download.href}

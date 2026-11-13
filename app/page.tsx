@@ -771,7 +771,7 @@ export default function Home() {
                     rel="noopener noreferrer"
                     className="btn btn-ghost"
                   >
-                    GitHub repository
+                    ★ Star on GitHub
                     <span aria-hidden>↗</span>
                   </a>
                 </div>
