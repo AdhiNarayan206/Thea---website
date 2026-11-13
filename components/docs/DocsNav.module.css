@@ -1,0 +1,226 @@
+.nav {
+  position: sticky;
+  top: calc(var(--header-h) + 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.heading {
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* --- Page list ----------------------------------------------------------- */
+
+.list {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 9px;
+  padding: 10px 12px 10px 10px;
+  border-left: 1px solid transparent;
+  transition:
+    background-color 180ms var(--ease),
+    border-color 180ms var(--ease);
+}
+
+.item:hover {
+  background: rgba(244, 240, 230, 0.03);
+  border-left-color: var(--line-strong);
+}
+
+.item[data-active] {
+  background: rgba(244, 240, 230, 0.045);
+  border-left-color: var(--vermilion);
+}
+
+.no {
+  padding-top: 2px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--muted-2);
+}
+
+.item[data-active] .no {
+  color: var(--vermilion);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--muted);
+  transition: color 180ms var(--ease);
+}
+
+.item:hover .label,
+.item[data-active] .label {
+  color: var(--text);
+}
+
+.blurb {
+  font-family: var(--mono);
+  font-size: 7.5px;
+  line-height: 1.4;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* --- Download block ------------------------------------------------------ */
+
+.download {
+  padding: 15px;
+  background: var(--shell-2);
+  border: 1px solid var(--line);
+}
+
+.dlMeta {
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.dlLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 9px 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition:
+    background-color 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.dlLink:hover {
+  background: #fffdf7;
+  transform: translateY(-1px);
+}
+
+.dlSize {
+  font-size: 8px;
+  opacity: 0.55;
+}
+
+.dlNote {
+  margin-top: 10px;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--muted-2);
+  text-wrap: pretty;
+}
+
+.back {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  line-height: 1;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.back a:hover {
+  color: var(--text);
+}
+
+/* --- Narrow screens: a scrollable strip --------------------------------- */
+
+@media (max-width: 940px) {
+  .nav {
+    position: static;
+    gap: 0;
+    margin-inline: calc(var(--gutter) * -1);
+    border-block: 1px solid var(--line);
+    background: rgba(10, 10, 11, 0.6);
+  }
+
+  .heading,
+  .download,
+  .back,
+  .blurb {
+    display: none;
+  }
+
+  .list {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-inline: var(--gutter);
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .list li {
+    flex: none;
+  }
+
+  .item {
+    grid-template-columns: auto;
+    gap: 0;
+    padding: 14px 13px 13px;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+  }
+
+  .item:hover {
+    background: none;
+    border-left-color: transparent;
+  }
+
+  .item[data-active] {
+    background: none;
+    border-bottom-color: var(--vermilion);
+  }
+
+  .no {
+    display: none;
+  }
+
+  .label {
+    white-space: nowrap;
+    font-family: var(--mono);
+    font-size: 9px;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}

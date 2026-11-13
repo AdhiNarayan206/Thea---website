@@ -1,0 +1,284 @@
+/* --------------------------------------------------------------------------
+   Fixed site bar: wordmark, chapter rail, one download button.
+   The rail is scrollable on small screens rather than hidden — every chapter
+   stays one tap away.
+   -------------------------------------------------------------------------- */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  background: rgba(10, 10, 11, 0.72);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  transition: background-color 240ms var(--ease);
+}
+
+.header[data-scrolled] {
+  background: rgba(10, 10, 11, 0.92);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 32px);
+  width: 100%;
+  max-width: var(--maxw);
+  height: var(--header-h);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* --- Brand --------------------------------------------------------------- */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  min-width: 0;
+}
+
+.brandIcon {
+  width: 30px;
+  height: 30px;
+  image-rendering: pixelated;
+  transition: transform 260ms var(--ease);
+}
+
+.brand:hover .brandIcon {
+  transform: translateY(-2px) rotate(-3deg);
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+
+.tagline {
+  padding-left: 12px;
+  border-left: 1px solid var(--line-strong);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  line-height: 1.25;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+/* --- Chapters ------------------------------------------------------------ */
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  margin-left: auto;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.navItem {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 9px 9px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  white-space: nowrap;
+  transition: color 180ms var(--ease);
+}
+
+.navItem::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: 1px;
+  height: 1px;
+  background: var(--vermilion);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms var(--ease);
+}
+
+.navItem:hover {
+  color: var(--text);
+}
+
+.navItem[data-active] {
+  color: var(--text);
+}
+
+.navItem[data-active]::after {
+  transform: scaleX(1);
+}
+
+.no {
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: var(--muted-2);
+  opacity: 0.7;
+}
+
+.navItem[data-active] .no {
+  color: var(--vermilion);
+  opacity: 1;
+}
+
+/* --- Right side ---------------------------------------------------------- */
+
+.right {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  flex: none;
+}
+
+.quiet {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 180ms var(--ease);
+}
+
+.quiet:hover {
+  color: var(--text);
+}
+
+.download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition:
+    background-color 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.download span {
+  font-size: 8px;
+  opacity: 0.55;
+}
+
+.download:hover {
+  background: #fffdf7;
+  transform: translateY(-1px);
+}
+
+/* --- Progress ------------------------------------------------------------ */
+
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--vermilion);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1240px) {
+  .tagline {
+    display: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .quiet {
+    display: none;
+  }
+
+  .navItem {
+    padding-inline: 8px;
+  }
+
+  .navItem::after {
+    left: 8px;
+    right: 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .bar {
+    gap: 12px;
+  }
+
+  .brandIcon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .wordmark {
+    font-size: 1.35rem;
+  }
+
+  .navItem {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 8px 7px;
+  }
+
+  .navItem::after {
+    left: 7px;
+    right: 7px;
+  }
+
+  .no {
+    display: none;
+  }
+
+  .download {
+    padding: 9px 10px;
+    font-size: 9px;
+  }
+
+  .download span {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .navItem {
+    padding-inline: 6px;
+  }
+
+  .navItem::after {
+    left: 6px;
+    right: 6px;
+  }
+
+  .download {
+    padding: 8px 9px;
+    letter-spacing: 0.08em;
+  }
+}

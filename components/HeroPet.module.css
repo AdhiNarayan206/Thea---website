@@ -1,0 +1,485 @@
+/* --------------------------------------------------------------------------
+   HeroPet — a paper desktop inside the dark shell.
+   The stage is deliberately a piece of warm paper: everything Thea touches
+   stays 1-bit, and the site chrome stays out of her way.
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+}
+
+.stage {
+  position: relative;
+  padding: 9px;
+  background: var(--paper);
+  border: 1px solid rgba(11, 11, 12, 0.22);
+  border-radius: 2px;
+  outline: none;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 2px 0 rgba(0, 0, 0, 0.35),
+    0 50px 110px -60px rgba(0, 0, 0, 0.95);
+}
+
+.stage:focus-visible {
+  outline: 2px solid var(--vermilion);
+  outline-offset: 4px;
+}
+
+.desktop {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  min-height: 340px;
+  overflow: hidden;
+  border: 1px solid rgba(11, 11, 12, 0.12);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgba(11, 11, 12, 0.052) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 11, 12, 0.052) 1px, transparent 1px),
+    radial-gradient(120% 90% at 58% 8%, #fbf8f1 0%, var(--paper) 52%, #e7e1d2 100%);
+  background-size:
+    28px 28px,
+    28px 28px,
+    100% 100%;
+}
+
+/* --- Stage furniture ----------------------------------------------------- */
+
+.live {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border: 1px solid rgba(11, 11, 12, 0.18);
+  background: rgba(244, 240, 230, 0.82);
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4b473e;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.liveDot {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--vermilion);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.dims {
+  position: absolute;
+  top: 15px;
+  right: 14px;
+  z-index: 4;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.45);
+  pointer-events: none;
+}
+
+.edgeNote {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 4;
+  translate: -50% 0;
+  padding: 4px 7px;
+  border: 1px dashed rgba(11, 11, 12, 0.2);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.44);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.edgeNote::before {
+  content: "↑";
+  margin-right: 5px;
+}
+
+/* --- A small note, taped to the screen ---------------------------------- */
+
+.note {
+  position: absolute;
+  top: 46px;
+  left: 16px;
+  z-index: 3;
+  width: 164px;
+  transform: rotate(-1.4deg);
+  background: #fffdf7;
+  border: 1.5px solid var(--ink);
+  box-shadow: 5px 5px 0 rgba(11, 11, 12, 0.08);
+  pointer-events: none;
+}
+
+.noteBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 7px;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #57534a;
+}
+
+.noteDots {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.noteDots i {
+  width: 4px;
+  height: 4px;
+  border: 1px solid rgba(11, 11, 12, 0.4);
+  border-radius: 50%;
+}
+
+.noteBody {
+  padding: 8px 8px 10px;
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.6;
+  color: #3a3730;
+}
+
+.noteBody p + p {
+  margin-top: 4px;
+}
+
+.caret {
+  color: var(--vermilion);
+  animation: caret 1.1s steps(1) infinite;
+}
+
+/* --- The desk ------------------------------------------------------------ */
+
+.desk {
+  position: absolute;
+  inset: 38px 10px 44px;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.desk::before {
+  content: "";
+  position: absolute;
+  top: 16%;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  border-top: 1px dashed rgba(11, 11, 12, 0.17);
+  pointer-events: none;
+}
+
+.desk::after {
+  content: "feed shelf";
+  position: absolute;
+  top: calc(16% + 5px);
+  right: 0;
+  z-index: 1;
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.32);
+  pointer-events: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  touch-action: pan-y;
+}
+
+.stage[data-hovering] .canvas {
+  cursor: grab;
+}
+
+.stage[data-hovering] .canvas:active {
+  cursor: grabbing;
+}
+
+/* --- Taskbar ------------------------------------------------------------- */
+
+.taskbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 38px;
+  padding: 0 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+.winMark {
+  display: grid;
+  grid-template-columns: repeat(2, 6px);
+  grid-auto-rows: 6px;
+  gap: 2px;
+  flex: none;
+}
+
+.winMark i {
+  display: block;
+  background: rgba(244, 240, 230, 0.78);
+}
+
+.tbApp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 3px 5px;
+  border-bottom: 2px solid var(--vermilion);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.tbIcon {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+
+.tray {
+  margin-left: auto;
+  color: rgba(244, 240, 230, 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Controls under the stage ------------------------------------------- */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  padding-top: 2px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--vermilion);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.action {
+  padding: 9px 13px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  transition:
+    background-color 180ms var(--ease),
+    border-color 180ms var(--ease),
+    color 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.action:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
+}
+
+.action:active {
+  transform: translateY(1px);
+}
+
+.hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.hints span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hints i {
+  font-style: normal;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 1px;
+  white-space: nowrap;
+}
+
+/* --- Motion -------------------------------------------------------------- */
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+  .note {
+    width: 148px;
+  }
+}
+
+@media (max-width: 860px) {
+  .desktop {
+    aspect-ratio: 4 / 4.6;
+    min-height: 330px;
+  }
+
+  .note,
+  .edgeNote {
+    display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .wrap {
+    gap: 14px;
+  }
+
+  .stage {
+    padding: 6px;
+  }
+
+  .desktop {
+    aspect-ratio: 4 / 5;
+    min-height: 300px;
+    background-size:
+      22px 22px,
+      22px 22px,
+      100% 100%;
+  }
+
+  .desk {
+    inset: 34px 6px 40px;
+  }
+
+  .taskbar {
+    height: 34px;
+    gap: 9px;
+    padding: 0 8px;
+    font-size: 8.5px;
+  }
+
+  .live {
+    top: 9px;
+    left: 9px;
+    font-size: 8px;
+  }
+
+  .dims {
+    top: 12px;
+    right: 9px;
+    font-size: 8px;
+  }
+
+  .footer {
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .action {
+    flex: 1;
+    padding-inline: 8px;
+    font-size: 9px;
+  }
+
+  .hints {
+    gap: 8px 16px;
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liveDot,
+  .statusDot,
+  .caret {
+    animation: none;
+  }
+}
